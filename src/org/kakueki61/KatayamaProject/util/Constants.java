@@ -8,5 +8,8 @@ package org.kakueki61.KatayamaProject.util;
  */
 public class Constants {
 
+    /* the list of daily list */
     public static final String URL = "http://feeds.dailyfeed.jp/feed/105.rss";
+    /* today's list */
+    public static final String URL_LIFEHUCKER = "http://feeds.lifehacker.jp/rss/lifehacker/index.xml";
 }

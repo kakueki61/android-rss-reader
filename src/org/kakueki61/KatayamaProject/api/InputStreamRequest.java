@@ -3,7 +3,9 @@ package org.kakueki61.KatayamaProject.api;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
@@ -17,14 +19,11 @@ public class InputStreamRequest extends Request<InputStream> {
     private final Response.Listener<InputStream> mListener;
 
     /**
-     * Creates a new request with the given method (one of the values from {@link com.android.volley.Request.Method}),
-     * URL, and error listener.  Note that the normal response listener is not provided here as
-     * delivery of responses is provided by subclasses, who have a better idea of how to deliver
-     * an already-parsed response.
      *
      * @param method
      * @param url
      * @param listener
+     * @param errorListener
      */
     public InputStreamRequest(int method, String url, Response.Listener<InputStream> listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
@@ -32,10 +31,16 @@ public class InputStreamRequest extends Request<InputStream> {
     }
 
     /**
-     * Subclasses must implement this to parse the raw network response
-     * and return an appropriate response type. This method will be
-     * called from a worker thread.  The response will not be delivered
-     * if you return null.
+     *
+     * @param url
+     * @param listener
+     * @param errorListener
+     */
+    public InputStreamRequest(String url, Response.Listener<InputStream> listener, Response.ErrorListener errorListener) {
+        this(Method.GET, url, listener, errorListener);
+    }
+
+    /**
      *
      * @param response Response from the network
      *
@@ -43,7 +48,8 @@ public class InputStreamRequest extends Request<InputStream> {
      */
     @Override
     protected Response<InputStream> parseNetworkResponse(NetworkResponse response) {
-        return null;
+        InputStream inputStream = new ByteArrayInputStream(response.data);
+        return Response.success(inputStream, HttpHeaderParser.parseCacheHeaders(response));
     }
 
     /**
@@ -56,6 +62,6 @@ public class InputStreamRequest extends Request<InputStream> {
      */
     @Override
     protected void deliverResponse(InputStream response) {
-
+        mListener.onResponse(response);
     }
 }
