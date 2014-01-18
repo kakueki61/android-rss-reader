@@ -16,6 +16,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is the screen showing first ListView
@@ -41,14 +43,12 @@ public class MainDisplayActivity extends Activity {
                     @Override
                     public void onResponse(InputStream is) {
                         List<HashMap<String, String>> response = parseXmlContent(is);
-                        for(int i = 0; i < response.size(); i++) {
-                            Log.i("map", i + ": ");
-                            Iterator<String> iterator = response.get(i).keySet().iterator();
-                            String key;
-                            while (iterator.hasNext()) {
-                                key = iterator.next();
-                                Log.i(key, response.get(i).get(key));
-                            }
+                        //logHashList(response);
+
+                        //parse <description> tag
+                        List<String> imgUrlList = extractImgUrls(response);
+                        for(int i = 0; i < imgUrlList.size(); i++) {
+                            Log.i("imgUrlList", i + ": " + imgUrlList.get(i));
                         }
                     }
                 },
@@ -112,5 +112,33 @@ public class MainDisplayActivity extends Activity {
         }
 
         return responseHolder;
+    }
+
+    public List<String> extractImgUrls(List<HashMap<String, String>> hashMapList) {
+        String description;
+        List<String> imgUrlList = new ArrayList<String>();
+        String imgUrlPatternStr = "<img\\s+src\\s*=\\s*\"(.*?)\"";
+        Pattern imgUrlPattern = Pattern.compile(imgUrlPatternStr);
+        Matcher matcher;
+        for(int i = 0; i < hashMapList.size(); i++) {
+            description = hashMapList.get(i).get("description");
+            matcher = imgUrlPattern.matcher(description);
+            if(matcher.find()) {
+                imgUrlList.add(matcher.group(1));
+            }
+        }
+        return imgUrlList;
+    }
+
+    private void logHashList(List<HashMap<String, String>> hashMapList) {
+        for(int i = 0; i < hashMapList.size(); i++) {
+            Log.i("map", i + ": ");
+            Iterator<String> iterator = hashMapList.get(i).keySet().iterator();
+            String key;
+            while (iterator.hasNext()) {
+                key = iterator.next();
+                Log.i(key, hashMapList.get(i).get(key));
+            }
+        }
     }
 }
