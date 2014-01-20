@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.ListView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import org.kakueki61.KatayamaProject.adapter.MainDisplayListViewAdapter;
 import org.kakueki61.KatayamaProject.api.InputStreamRequest;
 import org.kakueki61.KatayamaProject.util.Constants;
 import org.xmlpull.v1.XmlPullParser;
@@ -28,10 +30,18 @@ import java.util.regex.Pattern;
 public class MainDisplayActivity extends Activity {
 
     private RequestQueue mQueue;
+    private ListView listView;
+
+    public static String DESC_TAG = "description";
+    public static String IMG_TAG = "img";
+    public static String CONTENT_TAG = "content";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_list);
+
+        listView = (ListView) findViewById(R.id.listview);
 
         mQueue = Volley.newRequestQueue(getApplicationContext());
         requestFeed(Constants.URL_LIFEHUCKER);
@@ -45,11 +55,13 @@ public class MainDisplayActivity extends Activity {
                         List<HashMap<String, String>> response = parseXmlContent(is);
                         //logHashList(response);
 
-                        //parse <description> tag
-                        List<String> imgUrlList = extractImgUrls(response);
-                        for(int i = 0; i < imgUrlList.size(); i++) {
-                            Log.i("imgUrlList", i + ": " + imgUrlList.get(i));
-                        }
+                        //parse <description> tag(CDATA)
+                        List<Map<String, String>> cdataMapList = extractContentsFromCDATA(response);
+                        logHashList(cdataMapList);
+
+                        listView.setAdapter(new MainDisplayListViewAdapter(getApplicationContext(),
+                                cdataMapList,
+                                Volley.newRequestQueue(getApplicationContext())));
                     }
                 },
                 new Response.ErrorListener() {
@@ -114,23 +126,37 @@ public class MainDisplayActivity extends Activity {
         return responseHolder;
     }
 
-    public List<String> extractImgUrls(List<HashMap<String, String>> hashMapList) {
+    public List<Map<String, String>> extractContentsFromCDATA(List<HashMap<String, String>> hashMapList) {
         String description;
-        List<String> imgUrlList = new ArrayList<String>();
-        String imgUrlPatternStr = "<img\\s+src\\s*=\\s*\"(.*?)\"";
+        List<Map<String, String>> cdataMapList = new ArrayList<Map<String, String>>();
+
+        String imgUrlPatternStr = "<img.+src\\s*=\\s*\"(.*?\\.(jpg|png|jpeg))\"";     //Large or Small character
+        String passagePatternStr = ">\\s*([^<>]*?)\\s*<\\s*a";
         Pattern imgUrlPattern = Pattern.compile(imgUrlPatternStr);
+        Pattern passagePattern = Pattern.compile(passagePatternStr);
         Matcher matcher;
+
         for(int i = 0; i < hashMapList.size(); i++) {
-            description = hashMapList.get(i).get("description");
+            Map<String, String> cdataMap = new HashMap<String, String>();
+            description = hashMapList.get(i).get(DESC_TAG);
             matcher = imgUrlPattern.matcher(description);
             if(matcher.find()) {
-                imgUrlList.add(matcher.group(1));
+                cdataMap.put(IMG_TAG, matcher.group(1));
+            }else {
+                continue;
             }
+
+            matcher = passagePattern.matcher(description);
+            if(matcher.find()) {
+                cdataMap.put(CONTENT_TAG, matcher.group(1));
+            }
+
+            cdataMapList.add(cdataMap);
         }
-        return imgUrlList;
+        return cdataMapList;
     }
 
-    private void logHashList(List<HashMap<String, String>> hashMapList) {
+    private void logHashList(List<Map<String, String>> hashMapList) {
         for(int i = 0; i < hashMapList.size(); i++) {
             Log.i("map", i + ": ");
             Iterator<String> iterator = hashMapList.get(i).keySet().iterator();
