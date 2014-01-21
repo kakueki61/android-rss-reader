@@ -60,10 +60,10 @@ public class MainDisplayListViewAdapter extends ArrayAdapter<Map<String, String>
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String text = mResponseMapList.get(position).get(MainDisplayActivity.CONTENT_TAG);
+        String text = mResponseMapList.get(position).get(MainDisplayActivity.TITLE_TAG);
         String imgUrl = mResponseMapList.get(position).get(MainDisplayActivity.IMG_TAG);
-        Log.d("getView", "text: " + text);
-        Log.d("getView", "imgUrl: " + imgUrl);
+        Log.d("getView: " + position, "text: " + text);
+        Log.d("getView: " + position, "imgUrl: " + imgUrl);
 
         if(imgUrl == null) {
             return null;
@@ -73,8 +73,7 @@ public class MainDisplayListViewAdapter extends ArrayAdapter<Map<String, String>
                 = ImageLoader.getImageListener(viewHolder.imageView,
                 android.R.drawable.spinner_background,
                 android.R.drawable.ic_dialog_alert);
-        mImageLoader.get(imgUrl,
-                imageListener);
+        mImageLoader.get(imgUrl, imageListener);
 
         viewHolder.textView.setText(text);
         return convertView;

@@ -32,9 +32,12 @@ public class MainDisplayActivity extends Activity {
     private RequestQueue mQueue;
     private ListView listView;
 
+    public static String TITLE_TAG = "title";
     public static String DESC_TAG = "description";
     public static String IMG_TAG = "img";
     public static String CONTENT_TAG = "content";
+    public static String LINK_TAG = "link";
+    public static String GUID_TAG = "guid";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class MainDisplayActivity extends Activity {
                 new Response.Listener<InputStream>() {
                     @Override
                     public void onResponse(InputStream is) {
-                        List<HashMap<String, String>> response = parseXmlContent(is);
+                        List<Map<String, String>> response = parseXmlContent(is);
                         //logHashList(response);
 
                         //parse <description> tag(CDATA)
@@ -74,9 +77,9 @@ public class MainDisplayActivity extends Activity {
         mQueue.add(request);
     }
 
-    private ArrayList<HashMap<String, String>> parseXmlContent(InputStream inputStream) {
-        ArrayList<HashMap<String, String>> responseHolder = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> itemMap = new HashMap<String, String>();
+    private List<Map<String, String>> parseXmlContent(InputStream inputStream) {
+        List<Map<String, String>> responseHolder = new ArrayList<Map<String, String>>();
+        Map<String, String> itemMap = new HashMap<String, String>();
         XmlPullParser parser;
         try {
             parser = Xml.newPullParser();
@@ -126,7 +129,7 @@ public class MainDisplayActivity extends Activity {
         return responseHolder;
     }
 
-    public List<Map<String, String>> extractContentsFromCDATA(List<HashMap<String, String>> hashMapList) {
+    public List<Map<String, String>> extractContentsFromCDATA(List<Map<String, String>> hashMapList) {
         String description;
         List<Map<String, String>> cdataMapList = new ArrayList<Map<String, String>>();
 
@@ -150,6 +153,9 @@ public class MainDisplayActivity extends Activity {
             if(matcher.find()) {
                 cdataMap.put(CONTENT_TAG, matcher.group(1));
             }
+
+            cdataMap.put(TITLE_TAG, hashMapList.get(i).get(TITLE_TAG));
+            cdataMap.put(LINK_TAG, hashMapList.get(i).get(LINK_TAG));
 
             cdataMapList.add(cdataMap);
         }
