@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- image -->
+    <dimen name="img_listview">250dp</dimen>
+
+    <!-- text -->
+    <dimen name="txt_listview_title">18sp</dimen>
+
+    <!-- margin -->
+    <dimen name="margin_textview">10dp</dimen>
+</resources>
