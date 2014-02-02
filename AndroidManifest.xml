@@ -16,5 +16,6 @@
         </activity>
         <activity android:name=".MainDisplayActivity" />
         <activity android:name=".NewsDetailActivity" />
+        <activity android:name=".WebViewActivity" />
     </application>
 </manifest>

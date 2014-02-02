@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
@@ -33,7 +34,7 @@ public class NewsDetailActivity extends Activity {
         Intent intent = getIntent();
         String title = intent.getStringExtra(INTENT_TITLE);
         String content = intent.getStringExtra(INTENT_CONTENT);
-        String link = intent.getStringExtra(INTENT_LINK);
+        final String link = intent.getStringExtra(INTENT_LINK);
         String imgUrl = intent.getStringExtra(INTENT_IMG);
         Log.d(TAG, "title: " + title);
         Log.d(TAG, "desc: " + content);
@@ -53,6 +54,15 @@ public class NewsDetailActivity extends Activity {
 
         titleView.setText(title);
         descView.setText(content);
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(NewsDetailActivity.this.getApplicationContext(), WebViewActivity.class);
+                intent.putExtra(WebViewActivity.INTENT_URL, link);
+                startActivity(intent);
+            }
+        });
     }
 
 }
