@@ -15,5 +15,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainDisplayActivity" />
+        <activity android:name=".NewsDetailActivity" />
     </application>
 </manifest>

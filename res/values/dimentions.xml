@@ -5,6 +5,8 @@
 
     <!-- text -->
     <dimen name="txt_listview_title">18sp</dimen>
+    <dimen name="txt_detail_title">20sp</dimen>
+    <dimen name="txt_detail_desc">12sp</dimen>
 
     <!-- margin -->
     <dimen name="margin_textview">10dp</dimen>
