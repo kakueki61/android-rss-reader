@@ -12,4 +12,6 @@ public class Constants {
     public static final String URL = "http://feeds.dailyfeed.jp/feed/105.rss";
     /* today's list */
     public static final String URL_LIFEHUCKER = "http://feeds.lifehacker.jp/rss/lifehacker/index.xml";
+    /* 新・会社論 - PRESIDENT Online - PRESIDENT */
+    public static final String URL_PRESIDENT_4 = "http://president.jp/list/rss?cc=column4";
 }

@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
-import org.kakueki61.KatayamaProject.MainDisplayActivity;
 import org.kakueki61.KatayamaProject.NewsDetailActivity;
 import org.kakueki61.KatayamaProject.R;
+import org.kakueki61.KatayamaProject.util.DataHandleHelper;
 import org.kakueki61.KatayamaProject.util.volley.LruImageCache;
+import org.kakueki61.KatayamaProject.util.volley.VolleyHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -32,14 +33,14 @@ public class MainDisplayListViewAdapter extends ArrayAdapter<Map<String, String>
     private ImageLoader mImageLoader;
     private LayoutInflater mInflater;
 
-    public MainDisplayListViewAdapter(Activity activity, List<Map<String, String>> responseMapList, RequestQueue queue) {
+    public MainDisplayListViewAdapter(Activity activity, List<Map<String, String>> responseMapList) {
         super(activity, 0, responseMapList);
 
         this.mActivity = activity;
         this.mResponseMapList = responseMapList;
-        this.mQueue = queue;
+        this.mQueue = VolleyHelper.getRequestQueue(activity.getApplicationContext());
 
-        mImageLoader = new ImageLoader(queue, new LruImageCache());
+        mImageLoader = new ImageLoader(this.mQueue, new LruImageCache());
         mInflater = LayoutInflater.from(activity);
     }
 
@@ -63,10 +64,10 @@ public class MainDisplayListViewAdapter extends ArrayAdapter<Map<String, String>
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        final String text = mResponseMapList.get(position).get(MainDisplayActivity.TITLE_TAG);
-        final String content = mResponseMapList.get(position).get(MainDisplayActivity.CONTENT_TAG);
-        final String link = mResponseMapList.get(position).get(MainDisplayActivity.LINK_TAG);
-        final String imgUrl = mResponseMapList.get(position).get(MainDisplayActivity.IMG_TAG);
+        final String text = mResponseMapList.get(position).get(DataHandleHelper.TITLE_TAG);
+        final String content = mResponseMapList.get(position).get(DataHandleHelper.CONTENT_TAG);
+        final String link = mResponseMapList.get(position).get(DataHandleHelper.LINK_TAG);
+        final String imgUrl = mResponseMapList.get(position).get(DataHandleHelper.IMG_TAG);
         Log.d("getView: " + position, "text: " + text);
         Log.d("getView: " + position, "content: " + content);
         Log.d("getView: " + position, "link: " + link);
