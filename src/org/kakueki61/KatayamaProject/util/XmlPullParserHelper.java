@@ -1,6 +1,6 @@
 package org.kakueki61.KatayamaProject.util;
 
-import android.util.Xml;
+import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -24,7 +24,7 @@ public class XmlPullParserHelper {
         Map<String, String> itemMap = new HashMap<String, String>();
         XmlPullParser parser;
         try {
-            parser = Xml.newPullParser();
+            parser = new KXmlParser();
             parser.setInput(inputStream, "UTF-8");
 
             int eventType = parser.getEventType();
