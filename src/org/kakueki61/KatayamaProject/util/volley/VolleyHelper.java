@@ -34,4 +34,13 @@ public class VolleyHelper {
 
         getRequestQueue(context).add(inputStreamRequest);
     }
+
+    public static void sendInputStreamRequests(Context context, String[] urls,
+                                              Response.Listener<InputStream> responseListener, Response.ErrorListener errorListener) {
+        for(int i = 0; i < urls.length; i++) {
+            InputStreamRequest inputStreamRequest = new InputStreamRequest(urls[i], responseListener, errorListener);
+            getRequestQueue(context).add(inputStreamRequest);
+        }
+
+    }
 }

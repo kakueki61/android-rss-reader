@@ -3,7 +3,6 @@ package org.kakueki61.KatayamaProject;
 import android.app.Activity;
 import android.os.Bundle;
 import org.kakueki61.KatayamaProject.api.ApiRequestFunctions;
-import org.kakueki61.KatayamaProject.util.Constants;
 import org.kakueki61.KatayamaProject.view.MainDisplayView;
 
 /**
@@ -19,7 +18,8 @@ public class MainDisplayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_list);
 
-        ApiRequestFunctions.requestFeed(getApplicationContext(), Constants.URL_LIFEHUCKER, new MainDisplayView(this));
+        ApiRequestFunctions.requestFeeds(getApplicationContext(),
+                getResources().getStringArray(R.array.feed_urls), new MainDisplayView(this));
     }
 
 }

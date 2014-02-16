@@ -20,8 +20,32 @@ import java.util.Map;
  */
 public class ApiRequestFunctions {
 
-    public static void requestFeed(final Context context, String url, final MainDisplayView view) {
+    public static void requestFeed(Context context, String url, final MainDisplayView view) {
         VolleyHelper.sendInputStreamRequest(context, url,
+                new Response.Listener<InputStream>() {
+                    @Override
+                    public void onResponse(InputStream is) {
+                        List<Map<String, String>> response = XmlPullParserHelper.inputStreamToHashList(is);
+                        //logHashList(response);
+
+                        //parse <description> tag(CDATA)
+                        List<Map<String, String>> cdataMapList = DataHandleHelper.extractContentsFromCDATA(response);
+                        LogHelper.logHashList(cdataMapList);
+
+                        view.render(cdataMapList);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+    }
+
+    public static void requestFeeds(Context context, String[] urls, final MainDisplayView view) {
+        VolleyHelper.sendInputStreamRequests(context, urls,
                 new Response.Listener<InputStream>() {
                     @Override
                     public void onResponse(InputStream is) {

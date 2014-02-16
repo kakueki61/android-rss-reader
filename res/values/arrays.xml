@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feed_urls">
+        <item>http://feeds.lifehacker.jp/rss/lifehacker/index.xml</item>
+        <item>http://president.jp/list/rss?cc=column4</item>
+        <item>http://wired.jp/rssfeeder</item>
+    </string-array>
+</resources>
