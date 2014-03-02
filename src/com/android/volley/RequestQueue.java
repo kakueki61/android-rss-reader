@@ -18,13 +18,9 @@ package com.android.volley;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -225,6 +221,8 @@ public class RequestQueue {
         request.setSequence(getSequenceNumber());
         request.addMarker("add-to-queue");
 
+        Log.d("kakueki61", request.toString());
+
         // If the request is uncacheable, skip the cache queue and go straight to the network.
         if (!request.shouldCache()) {
             mNetworkQueue.add(request);
@@ -235,6 +233,7 @@ public class RequestQueue {
         synchronized (mWaitingRequests) {
             String cacheKey = request.getCacheKey();
             if (mWaitingRequests.containsKey(cacheKey)) {
+                Log.d("kakueki61", "mWaitingRequests contains " + cacheKey);
                 // There is already a request in flight. Queue up.
                 Queue<Request> stagedRequests = mWaitingRequests.get(cacheKey);
                 if (stagedRequests == null) {

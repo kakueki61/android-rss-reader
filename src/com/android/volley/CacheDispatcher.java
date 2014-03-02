@@ -17,6 +17,7 @@
 package com.android.volley;
 
 import android.os.Process;
+import android.util.Log;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -89,6 +90,7 @@ public class CacheDispatcher extends Thread {
                 // Get a request from the cache triage queue, blocking until
                 // at least one is available.
                 final Request request = mCacheQueue.take();
+                Log.d("CacheDispatcher", request.toString());
                 request.addMarker("cache-queue-take");
 
                 // If the request has been canceled, don't bother dispatching it.
@@ -103,6 +105,7 @@ public class CacheDispatcher extends Thread {
                     request.addMarker("cache-miss");
                     // Cache miss; send off to the network dispatcher.
                     mNetworkQueue.put(request);
+                    Log.d("CacheDispatcher", "mNetworkQueue.put(request), request: " + request);
                     continue;
                 }
 
@@ -119,6 +122,8 @@ public class CacheDispatcher extends Thread {
                 Response<?> response = request.parseNetworkResponse(
                         new NetworkResponse(entry.data, entry.responseHeaders));
                 request.addMarker("cache-hit-parsed");
+
+                Log.d("CacheDispatcher", "response: " + response);
 
                 if (!entry.refreshNeeded()) {
                     // Completely unexpired cache hit. Just deliver the response.

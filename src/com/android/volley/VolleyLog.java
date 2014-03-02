@@ -27,7 +27,7 @@ import java.util.Locale;
 public class VolleyLog {
     public static String TAG = "Volley";
 
-    public static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE);
+    public static boolean DEBUG = Log.isLoggable(TAG, Log.INFO);
 
     /**
      * Customize the log tag for your application, so that other apps

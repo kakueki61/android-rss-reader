@@ -18,8 +18,7 @@ public class MainDisplayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_list);
 
-        ApiRequestFunctions.requestFeeds(getApplicationContext(),
-                getResources().getStringArray(R.array.feed_urls), new MainDisplayView(this));
+        ApiRequestFunctions.requestFeeds(this, getResources().getStringArray(R.array.feed_urls), new MainDisplayView(this));
     }
 
 }
