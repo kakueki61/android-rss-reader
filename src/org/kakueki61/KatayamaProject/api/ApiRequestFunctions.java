@@ -43,4 +43,15 @@ public class ApiRequestFunctions {
                 }
         );
     }
+
+    public static void requestFeed(final Context context, String url, Response.Listener responseListener) {
+        VolleyHelper.sendInputStreamRequest(context, url, responseListener,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+    }
 }
