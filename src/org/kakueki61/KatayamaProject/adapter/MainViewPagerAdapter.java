@@ -12,21 +12,24 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
-    public MainViewPagerAdapter(FragmentManager fm) {
+    private String[] mUrls;
+
+    public MainViewPagerAdapter(FragmentManager fm, String[] urls) {
         super(fm);
+        this.mUrls = urls;
     }
 
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
 
-        fragment = new MainListFragment();
+        fragment = new MainListFragment(mUrls[position]);
 
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return mUrls.length;
     }
 }

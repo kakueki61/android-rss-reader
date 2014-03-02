@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feed_urls">
+        <item>http://feeds.lifehacker.jp/rss/lifehacker/index.xml</item>
+        <item>http://techwave.jp/feed</item>
+        <item>http://feeds.gizmodo.jp/rss/gizmodo/index.xml?rss</item>
+        <item>http://blog.btrax.com/jp/feed/</item>
+        <item>http://toyokeizai.net/list/feed/rss</item>
+    </string-array>
+</resources>

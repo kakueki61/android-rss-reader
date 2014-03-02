@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import com.android.volley.Response;
 import org.kakueki61.KatayamaProject.api.ApiRequestFunctions;
-import org.kakueki61.KatayamaProject.util.Constants;
 import org.kakueki61.KatayamaProject.util.DataHandleHelper;
 import org.kakueki61.KatayamaProject.util.LogHelper;
 import org.kakueki61.KatayamaProject.util.XmlPullParserHelper;
@@ -21,11 +20,18 @@ import java.util.Map;
  */
 public class MainListFragment extends ListFragment {
 
+    private String mUrl;
+
+    public MainListFragment(String url) {
+        super();
+        this.mUrl = url;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ApiRequestFunctions.requestFeed(getActivity(), Constants.URL_LIFEHUCKER, new Response.Listener<InputStream>() {
+        ApiRequestFunctions.requestFeed(getActivity(), mUrl, new Response.Listener<InputStream>() {
             @Override
             public void onResponse(InputStream is) {
                 List<Map<String, String>> response = XmlPullParserHelper.inputStreamToHashList(is);

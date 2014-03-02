@@ -18,7 +18,8 @@ public class MainDisplayActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_list);
 
-        MainViewPagerAdapter pagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        MainViewPagerAdapter pagerAdapter
+                = new MainViewPagerAdapter(getSupportFragmentManager(), getResources().getStringArray(R.array.feed_urls));
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
     }
