@@ -1,10 +1,9 @@
 package org.kakueki61.KatayamaProject;
 
-import android.app.Activity;
 import android.os.Bundle;
-import org.kakueki61.KatayamaProject.api.ApiRequestFunctions;
-import org.kakueki61.KatayamaProject.util.Constants;
-import org.kakueki61.KatayamaProject.view.MainDisplayView;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import org.kakueki61.KatayamaProject.adapter.MainViewPagerAdapter;
 
 /**
  * This is the screen showing first ListView
@@ -12,14 +11,16 @@ import org.kakueki61.KatayamaProject.view.MainDisplayView;
  * @author <a href="mailto:">TakuyaKodama</a> (kodama-t)
  * @version 1.00 13/12/09 kodama-t
  */
-public class MainDisplayActivity extends Activity {
+public class MainDisplayActivity extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_list);
 
-        ApiRequestFunctions.requestFeed(getApplicationContext(), Constants.URL_LIFEHUCKER, new MainDisplayView(this));
+        MainViewPagerAdapter pagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(pagerAdapter);
     }
 
 }
